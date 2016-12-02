@@ -8,6 +8,9 @@ package concertbooking;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
@@ -22,25 +25,38 @@ public class Interface extends javax.swing.JFrame {
     ArrayList Seats_Silver;
     ArrayList Seats_Gold;
     ParseBookings pb = new ParseBookings();
+    Interface_Settings settings_interface = new Interface_Settings(this);
 
+    private float price_bronze;float price_silver;float price_gold;
+    
     /**
      * Creates new form Interface
      */
     public Interface() {
         initComponents();
+        this.setup();
+        this.addSeatListeners();
+    }
+    
+    public void setup(){
+        settings_interface.loadSettings();
         Seats = pb.load();
-        
         Seats_Bronze = (ArrayList) Seats.get(0);
         Seats_Silver = (ArrayList) Seats.get(1);
         Seats_Gold = (ArrayList) Seats.get(2);
         
+        
         populateSeats();
 
     }
-
+    
+    Seat[] bronzelist_;
+    Seat[] silverlist_;
+    Seat[] goldlist_;
+    
     private void populateSeats() {
         
-        Seat[] bronzelist_ = new Seat[]{
+        bronzelist_ = new Seat[]{
             this.seat_Bronze1,
             this.seat_Bronze2,
             this.seat_Bronze3,
@@ -73,7 +89,7 @@ public class Interface extends javax.swing.JFrame {
             this.seat_Bronze30,};
 
 		//Creates a List of silver seats.
-        Seat[] silverlist_ = new Seat[]{
+        silverlist_ = new Seat[]{
             this.seat_Silver1,
             this.seat_Silver2,
             this.seat_Silver3,
@@ -106,7 +122,7 @@ public class Interface extends javax.swing.JFrame {
             this.seat_Silver30,};
 
 		        //Create a list of gold seats
-        Seat[] goldlist_ = new Seat[]{
+        goldlist_ = new Seat[]{
             this.seat_Gold1,
             this.seat_Gold2,
             this.seat_Gold3,
@@ -148,11 +164,20 @@ public class Interface extends javax.swing.JFrame {
                 Seat_Bronze seatbronze_ = (Seat_Bronze) Seats_Bronze.get(x);
                 
                 if(seatbronze_.getBooked()){
-                    bronzelist_[x].setEnabled(false);
+                    //bronzelist_[x].setEnabled(false);
+                    bronzelist_[x].setBookedOverride(true, seatbronze_.getBookingName());
+                }else{
+                    //bronzelist_[x].setEnabled(true);
+                    bronzelist_[x].setBookedOverride(false, null);
                 }
                 
                 bronzelist_[x].setID(seatbronze_.getID());
-                bronzelist_[x].addActionListener(new SeatListener());
+                bronzelist_[x].setPrice(this.price_bronze);
+
+                //bronzelist_[x].addActionListener(new SeatListener());
+ 
+                
+  
                 //bronzelist_[x].setText(Integer.toString(seatbronze_.getID()));
                 bronzelist_[x].setType("bronze");
                 
@@ -171,10 +196,15 @@ public class Interface extends javax.swing.JFrame {
                 Seat_Silver seatsilver_ = (Seat_Silver) Seats_Silver.get(x);
 
                 if(seatsilver_.getBooked()){
-                    silverlist_[x].setEnabled(false);
+                    //silverlist_[x].setEnabled(false);
+                    silverlist_[x].setBookedOverride(true, seatsilver_.getBookingName());
+                }else{
+                    //silverlist_[x].setEnabled(true);
+                    silverlist_[x].setBookedOverride(false, null);
                 }   
                 silverlist_[x].setID(seatsilver_.getID());
-                silverlist_[x].addActionListener(new SeatListener());                
+                silverlist_[x].setPrice(this.price_silver);
+                //silverlist_[x].addActionListener(new SeatListener());                
                 //silverlist_[x].setText(Integer.toString(seatsilver_.getID()));
                 silverlist_[x].setType("silver");
             }
@@ -190,11 +220,16 @@ public class Interface extends javax.swing.JFrame {
                 Seat_Gold seatgold_ = (Seat_Gold) Seats_Gold.get(x);
                
                 if(seatgold_.getBooked()){
-                    goldlist_[x].setEnabled(false);
+                    //goldlist_[x].setEnabled(false);
+                    goldlist_[x].setBookedOverride(true, seatgold_.getBookingName());
+                }else{
+                    //goldlist_[x].setEnabled(true);
+                    goldlist_[x].setBookedOverride(false, null);
                 }
                 
                 goldlist_[x].setID(seatgold_.getID());
-                goldlist_[x].addActionListener(new SeatListener());
+                goldlist_[x].setPrice(this.price_gold);
+                //goldlist_[x].addActionListener(new SeatListener());
                 //goldlist_[x].setText(Integer.toString(seatgold_.getID()));
                 goldlist_[x].setType("gold");
             }
@@ -210,9 +245,16 @@ public class Interface extends javax.swing.JFrame {
         System.out.println("Seat Population Complete.");
     }
     
+    public void applySettings(String title, float bronze, float silver, float gold, String date){
+        this.Title_EventName.setText(title);
+        this.Title_EventDate.setText(date);
+        this.price_bronze=bronze;
+        this.price_silver=silver;
+        this.price_gold=gold;
+    }
     
     public void bookSeat(int ID, String bookingname){
-        System.out.println(ID);
+        System.out.println(bookingname);
         if(ID<30){
             Seat_Bronze sb = (Seat_Bronze) Seats_Bronze.get(ID);
             sb.setBooked(true, bookingname);
@@ -229,27 +271,88 @@ public class Interface extends javax.swing.JFrame {
         pb.save(Seats);
     }
     
-    private String getBookingName(){
-        JFrame bookingframe = new JFrame("Please Enter Booking Name");
+    public void unbookSeat(int ID) {
+        if (ID < 30) {
+            JOptionPane.showMessageDialog(null, "Bronze Seats Cannot Be Unbooked");
+        } else if (ID >= 30 && ID < 60) {
+            Seat_Silver ss = (Seat_Silver) Seats_Silver.get(ID - 30);
+            ss.setBooked(false, null);
+            Seats_Silver.set(ID - 30, ss);
+        } else {
+            Seat_Gold sg = (Seat_Gold) Seats_Gold.get(ID-60);
+            sg.setBooked(false, null);
+            Seats_Gold.set(ID-60, sg);
+        }
+        pb.save(Seats);
+    }
+    
+    private String getBookingName(Seat s){
+        JFrame bookingframe = new JFrame("Booking Details");
         String bookingname = JOptionPane.showInputDialog(
-                bookingframe, 
-                "Please Enter Surname:",
+                bookingframe,
+                "Please Enter Surname: \nSeat Price: £"+s.getPrice(),
                 "Booking Details",
                 JOptionPane.INFORMATION_MESSAGE
-       );
+        );
              return bookingname;   
     }
+    
+    
+    private void addSeatListeners(){
+        for (int x = 0; x < this.Seats_Bronze.size(); x = x + 1) {
+            Seat_Bronze seatbronze_ = (Seat_Bronze) Seats_Bronze.get(x);
+
+            bronzelist_[x].addActionListener(new SeatListener());
+
+        }
+        
+        for (int x = 0; x < this.Seats_Silver.size(); x = x + 1) {
+                Seat_Silver seatsilver_ = (Seat_Silver) Seats_Silver.get(x);
+
+                silverlist_[x].addActionListener(new SeatListener());                
+
+            }
+        
+        for (int x = 0; x < this.Seats_Gold.size(); x = x + 1) {
+                Seat_Gold seatgold_ = (Seat_Gold) Seats_Gold.get(x);
+               
+                goldlist_[x].addActionListener(new SeatListener());
+
+            }
+    }
+    
+
 
     //Fires when a seat is clicked.
     private class SeatListener implements ActionListener {
+
         @Override
         public void actionPerformed(ActionEvent e) {
-            Seat s = (Seat) e.getSource();
-            System.out.println(s.getID()+"@"+s.getType());
-
-            String bookingname_ = Interface.this.getBookingName();
             
-            Interface.this.bookSeat(s.getID(),bookingname_);
+            Seat s = (Seat) e.getSource();
+            System.out.println("Seat Fired. Booked: "+s.getBooked());
+            
+            if (s.getBooked() == true) {
+                    //JOptionPane.showMessageDialog(null, "Seat Already Booked\n Booking Name: "+s.getBookingName());
+                int dialogButton = JOptionPane.YES_NO_OPTION;
+                int dialogResult = JOptionPane.showConfirmDialog (null, "SEAT ALREADY BOOKED \nBooking Name: "+s.getBookingName()+"\nWould You Like to Remove the Booking?","Booking Details",dialogButton);
+
+                if (dialogResult == JOptionPane.YES_OPTION) {
+                      Interface.this.unbookSeat(s.getID());
+                }
+                    
+            } else {
+                String bookingname_ = Interface.this.getBookingName(s);
+
+                if ((bookingname_ == null) || (bookingname_.isEmpty())) {
+                    JOptionPane.showMessageDialog(null, "Booking Name Invalid!");
+                } else {
+                    Interface.this.bookSeat(s.getID(), bookingname_);
+                }
+            }
+            
+
+
             Interface.this.populateSeats();
         }
     }
@@ -356,14 +459,17 @@ public class Interface extends javax.swing.JFrame {
         seat_Gold28 = new concertbooking.Seat_Gold();
         seat_Gold26 = new concertbooking.Seat_Gold();
         Panel_Reports = new javax.swing.JPanel();
+        Title_EventDate = new javax.swing.JLabel();
+        Button_Settings = new javax.swing.JButton();
         Title_EventName = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
+        Button_Clear = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Booking System");
 
         Panel_Main.setPreferredSize(new java.awt.Dimension(657, 654));
+
+        seat_Bronze4.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
 
         javax.swing.GroupLayout Panel_BookingsLayout = new javax.swing.GroupLayout(Panel_Bookings);
         Panel_Bookings.setLayout(Panel_BookingsLayout);
@@ -685,20 +791,23 @@ public class Interface extends javax.swing.JFrame {
 
         Panel_Main.addTab("Reports", Panel_Reports);
 
-        Title_EventName.setFont(new java.awt.Font("Verdana", 0, 36)); // NOI18N
-        Title_EventName.setText("Event Title");
+        Title_EventDate.setFont(new java.awt.Font("Verdana", 0, 18)); // NOI18N
+        Title_EventDate.setText("01/01/2017");
 
-        jButton1.setText("SaveBookings");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        Button_Settings.setText("Event Setup");
+        Button_Settings.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                Button_SettingsActionPerformed(evt);
             }
         });
 
-        jButton2.setText("DEBUG");
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
+        Title_EventName.setFont(new java.awt.Font("Verdana", 0, 18)); // NOI18N
+        Title_EventName.setText("Event Title");
+
+        Button_Clear.setText("New Event");
+        Button_Clear.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
+                Button_ClearActionPerformed(evt);
             }
         });
 
@@ -712,36 +821,42 @@ public class Interface extends javax.swing.JFrame {
                     .addComponent(Panel_Main, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(Title_EventName)
-                        .addGap(151, 151, 151)
-                        .addComponent(jButton1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(Title_EventDate)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(Button_Clear)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton2)
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                        .addComponent(Button_Settings)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(Title_EventName)
-                    .addComponent(jButton1)
-                    .addComponent(jButton2))
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(Button_Settings, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(Button_Clear, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(Title_EventDate, javax.swing.GroupLayout.Alignment.TRAILING))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(Panel_Main, javax.swing.GroupLayout.PREFERRED_SIZE, 592, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(44, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-            pb.save(Seats);
-    }//GEN-LAST:event_jButton1ActionPerformed
+    private void Button_SettingsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Button_SettingsActionPerformed
+      settings_interface.setVisible(true);
+    }//GEN-LAST:event_Button_SettingsActionPerformed
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        this.getBookingName();
-    }//GEN-LAST:event_jButton2ActionPerformed
+    private void Button_ClearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Button_ClearActionPerformed
+            pb.clearBookings();
+            settings_interface.clearSettings();
+            Seats_Bronze.clear();Seats_Silver.clear();Seats_Gold.clear();Seats.clear();
+            this.setup();
+    }//GEN-LAST:event_Button_ClearActionPerformed
 
     /**
      * @param args the command line arguments
@@ -770,21 +885,16 @@ public class Interface extends javax.swing.JFrame {
         }
         //</editor-fold>
 
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new Interface().setVisible(true);
-            }
-        });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton Button_Clear;
+    private javax.swing.JButton Button_Settings;
     private javax.swing.JPanel Panel_Bookings;
     private javax.swing.JTabbedPane Panel_Main;
     private javax.swing.JPanel Panel_Reports;
+    private javax.swing.JLabel Title_EventDate;
     private javax.swing.JLabel Title_EventName;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
     private concertbooking.Seat_Bronze seat_Bronze1;
     private concertbooking.Seat_Bronze seat_Bronze10;
     private concertbooking.Seat_Bronze seat_Bronze11;

@@ -18,11 +18,12 @@ import javax.swing.border.Border;
  */
 public class Seat extends JButton {
 
-    int ID;
-    boolean booked;
-    String type;
-    String bookingname;
-    
+    private int ID;
+    private boolean booked;
+    private String type;
+    private String bookingname;
+    private float price;
+    private Border raisedbevel = BorderFactory.createRaisedBevelBorder();
     public Seat() {
 
         //Setting the size for each seat.
@@ -31,40 +32,54 @@ public class Seat extends JButton {
         this.setPreferredSize(d);
 
         //Sets the buttons border.
-        Border raisedbevel = BorderFactory.createRaisedBevelBorder();
+        
         this.setBorder(raisedbevel);
 
-        //Sets the seats defaults.
-        this.setText(" ");
-        this.bookingname="none";
-
     }
-    
-    public boolean getBooked(){
+
+    public void setPrice(float price) {
+        this.price = price;
+    }
+
+    public float getPrice() {
+        return this.price;
+    }
+
+    public boolean getBooked() {
         return booked;
     }
-    
-    public void setBooked(boolean booked, String bookingname){
-        this.booked = booked;this.bookingname=bookingname;
+
+    public void setBooked(boolean booked, String bookingname) {
+        this.booked = booked;
+        this.bookingname = bookingname;
     }
-    
-    public String getBookingName(){
+
+    public void setBookedOverride(boolean booked, String bookingname) {
+        if (booked) {
+            this.bookingname=bookingname;
+            this.setBorder(javax.swing.BorderFactory.createMatteBorder(20, 20, 20, 20, new java.awt.Color(153, 0, 51)));
+        }
+        this.booked = booked;
+    }
+
+    public String getBookingName() {
         return this.bookingname;
     }
-    
-    public String getType(){
+
+    public String getType() {
         return this.type;
     }
-    
-    public void setType(String type){
+
+    public void setType(String type) {
         this.type = type;
     }
-    
-    public void setID(int id_){
+
+    public void setID(int id_) {
+        if(!booked){this.setBorder(raisedbevel);}
         this.ID = id_;
     }
 
-    public int getID(){
+    public int getID() {
         return this.ID;
     }
 

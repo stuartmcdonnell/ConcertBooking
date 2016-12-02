@@ -14,6 +14,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -25,6 +26,28 @@ public class ParseBookings {
 
     }
 
+    public void clearBookings() {
+        FileWriter writer = null;
+        try {
+            File savefile = new File("bookings.txt");
+            writer = new FileWriter(savefile);
+            for (int x = 0; x <= 89; x = x + 1) {
+                String stringbuild = (x + ",false,none");
+                writer.write(stringbuild + "\n");
+            }
+            writer.flush();
+            writer.close();
+        } catch (IOException ex) {
+            Logger.getLogger(ParseBookings.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                writer.close();
+            } catch (IOException ex) {
+                Logger.getLogger(ParseBookings.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }
+    
     public ArrayList load() {
 
         //Creating Save file if doesnt exist.
