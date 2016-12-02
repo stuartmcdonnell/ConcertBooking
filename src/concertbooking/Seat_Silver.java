@@ -11,8 +11,6 @@ package concertbooking;
  */
 public class Seat_Silver extends Seat{
     
-    final double price = 20.00;
-    
     public Seat_Silver(){
         
          //Sets the seats colour to silver.

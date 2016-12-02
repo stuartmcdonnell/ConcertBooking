@@ -9,6 +9,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFrame;
@@ -26,7 +27,8 @@ public class Interface extends javax.swing.JFrame {
     ArrayList Seats_Gold;
     ParseBookings pb = new ParseBookings();
     Interface_Settings settings_interface = new Interface_Settings(this);
-
+    Reporting reporting = new Reporting();
+    
     private float price_bronze;float price_silver;float price_gold;
     
     /**
@@ -47,7 +49,17 @@ public class Interface extends javax.swing.JFrame {
         
         
         populateSeats();
-
+        resetReporting();
+        
+    }
+    
+    private void resetReporting(){
+        Reporting r_ = new Reporting();
+        r_.setup(Seats, settings_interface);
+        this.reporting = r_;
+        this.Reporting_TotalBookings.setText(Integer.toString(this.reporting.getTotalBookings()));
+        this.Reporting_TotalSeatsAv.setText(Integer.toString(this.reporting.getTotalSeatsAv()));
+        this.Reporting_TotalTakings.setText("£"+Float.toString(this.reporting.getTotalTakings()));
     }
     
     Seat[] bronzelist_;
@@ -267,6 +279,14 @@ public class Interface extends javax.swing.JFrame {
             Seat_Gold sg = (Seat_Gold) Seats_Gold.get(ID-60);
             sg.setBooked(true, bookingname);
             Seats_Gold.set(ID-60, sg);
+            
+            Random rn = new Random();
+            int rdn = rn.nextInt(10 - 1 + 1)+1;
+            if(rdn == 1){
+                JOptionPane.showMessageDialog(rootPane, "WIN: BACK-STAGE PASS");
+                
+            }
+            
         }
         pb.save(Seats);
     }
@@ -351,9 +371,9 @@ public class Interface extends javax.swing.JFrame {
                 }
             }
             
-
-
             Interface.this.populateSeats();
+            resetReporting();
+            
         }
     }
 
@@ -366,6 +386,7 @@ public class Interface extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        Button_Settings = new javax.swing.JButton();
         Panel_Main = new javax.swing.JTabbedPane();
         Panel_Bookings = new javax.swing.JPanel();
         seat_Bronze1 = new concertbooking.Seat_Bronze();
@@ -459,15 +480,34 @@ public class Interface extends javax.swing.JFrame {
         seat_Gold28 = new concertbooking.Seat_Gold();
         seat_Gold26 = new concertbooking.Seat_Gold();
         Panel_Reports = new javax.swing.JPanel();
+        reporting_lab = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+        Reporting_TotalBookings = new javax.swing.JLabel();
+        Reporting_TotalSeatsAv = new javax.swing.JLabel();
+        Reporting_TotalTakings = new javax.swing.JLabel();
+        jSeparator1 = new javax.swing.JSeparator();
         Title_EventDate = new javax.swing.JLabel();
-        Button_Settings = new javax.swing.JButton();
         Title_EventName = new javax.swing.JLabel();
         Button_Clear = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Booking System");
+        setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+
+        Button_Settings.setText("Event Setup");
+        Button_Settings.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                Button_SettingsActionPerformed(evt);
+            }
+        });
 
         Panel_Main.setPreferredSize(new java.awt.Dimension(657, 654));
+        Panel_Main.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                Panel_MainStateChanged(evt);
+            }
+        });
 
         seat_Bronze4.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
 
@@ -773,20 +813,69 @@ public class Interface extends javax.swing.JFrame {
                         .addComponent(seat_Gold23, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(seat_Gold24, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(seat_Gold25, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(18, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         Panel_Main.addTab("Bookings", Panel_Bookings);
+
+        reporting_lab.setFont(new java.awt.Font("Calibri", 0, 18)); // NOI18N
+        reporting_lab.setText("Total Takings:");
+
+        jLabel2.setFont(new java.awt.Font("Calibri", 0, 18)); // NOI18N
+        jLabel2.setText("Total Seats Available:");
+
+        jLabel3.setFont(new java.awt.Font("Calibri", 0, 18)); // NOI18N
+        jLabel3.setText("Total Bookings:");
+
+        Reporting_TotalBookings.setFont(new java.awt.Font("Calibri", 0, 18)); // NOI18N
+        Reporting_TotalBookings.setText("0");
+
+        Reporting_TotalSeatsAv.setFont(new java.awt.Font("Calibri", 0, 18)); // NOI18N
+        Reporting_TotalSeatsAv.setText("0");
+
+        Reporting_TotalTakings.setFont(new java.awt.Font("Calibri", 0, 18)); // NOI18N
+        Reporting_TotalTakings.setText("0");
+
+        jSeparator1.setOrientation(javax.swing.SwingConstants.VERTICAL);
 
         javax.swing.GroupLayout Panel_ReportsLayout = new javax.swing.GroupLayout(Panel_Reports);
         Panel_Reports.setLayout(Panel_ReportsLayout);
         Panel_ReportsLayout.setHorizontalGroup(
             Panel_ReportsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 652, Short.MAX_VALUE)
+            .addGroup(Panel_ReportsLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(Panel_ReportsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLabel3)
+                    .addComponent(reporting_lab)
+                    .addComponent(jLabel2))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(Panel_ReportsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(Reporting_TotalBookings)
+                    .addComponent(Reporting_TotalSeatsAv)
+                    .addComponent(Reporting_TotalTakings))
+                .addGap(138, 138, 138)
+                .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(319, Short.MAX_VALUE))
         );
         Panel_ReportsLayout.setVerticalGroup(
             Panel_ReportsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 564, Short.MAX_VALUE)
+            .addGroup(Panel_ReportsLayout.createSequentialGroup()
+                .addGap(27, 27, 27)
+                .addGroup(Panel_ReportsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel3)
+                    .addComponent(Reporting_TotalBookings))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(Panel_ReportsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel2)
+                    .addComponent(Reporting_TotalSeatsAv))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(Panel_ReportsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(reporting_lab)
+                    .addComponent(Reporting_TotalTakings))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(Panel_ReportsLayout.createSequentialGroup()
+                .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 423, Short.MAX_VALUE))
         );
 
         Panel_Main.addTab("Reports", Panel_Reports);
@@ -794,17 +883,11 @@ public class Interface extends javax.swing.JFrame {
         Title_EventDate.setFont(new java.awt.Font("Verdana", 0, 18)); // NOI18N
         Title_EventDate.setText("01/01/2017");
 
-        Button_Settings.setText("Event Setup");
-        Button_Settings.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                Button_SettingsActionPerformed(evt);
-            }
-        });
-
         Title_EventName.setFont(new java.awt.Font("Verdana", 0, 18)); // NOI18N
         Title_EventName.setText("Event Title");
 
         Button_Clear.setText("New Event");
+        Button_Clear.setFocusPainted(false);
         Button_Clear.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 Button_ClearActionPerformed(evt);
@@ -840,8 +923,8 @@ public class Interface extends javax.swing.JFrame {
                         .addComponent(Button_Clear, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(Title_EventDate, javax.swing.GroupLayout.Alignment.TRAILING))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(Panel_Main, javax.swing.GroupLayout.PREFERRED_SIZE, 592, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(44, Short.MAX_VALUE))
+                .addComponent(Panel_Main, javax.swing.GroupLayout.PREFERRED_SIZE, 583, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
         pack();
@@ -857,6 +940,10 @@ public class Interface extends javax.swing.JFrame {
             Seats_Bronze.clear();Seats_Silver.clear();Seats_Gold.clear();Seats.clear();
             this.setup();
     }//GEN-LAST:event_Button_ClearActionPerformed
+
+    private void Panel_MainStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_Panel_MainStateChanged
+        
+    }//GEN-LAST:event_Panel_MainStateChanged
 
     /**
      * @param args the command line arguments
@@ -893,8 +980,15 @@ public class Interface extends javax.swing.JFrame {
     private javax.swing.JPanel Panel_Bookings;
     private javax.swing.JTabbedPane Panel_Main;
     private javax.swing.JPanel Panel_Reports;
+    private javax.swing.JLabel Reporting_TotalBookings;
+    private javax.swing.JLabel Reporting_TotalSeatsAv;
+    private javax.swing.JLabel Reporting_TotalTakings;
     private javax.swing.JLabel Title_EventDate;
     private javax.swing.JLabel Title_EventName;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JSeparator jSeparator1;
+    private javax.swing.JLabel reporting_lab;
     private concertbooking.Seat_Bronze seat_Bronze1;
     private concertbooking.Seat_Bronze seat_Bronze10;
     private concertbooking.Seat_Bronze seat_Bronze11;

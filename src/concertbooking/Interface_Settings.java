@@ -45,6 +45,11 @@ public class Interface_Settings extends javax.swing.JFrame {
         return this.intface;
     }
     
+    public float[] getPrices(){
+        float[] prices = {this.setting_bronzeprice, this.setting_silverprice, this.setting_goldprice};
+        return prices;
+    }
+    
     public void clearSettings() {
         FileWriter writer = null;
         try {
