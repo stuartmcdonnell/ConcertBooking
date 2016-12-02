@@ -37,7 +37,7 @@ public class ParseBookings {
                     FileWriter writer = new FileWriter(savefile);
 
                     for (int x = 0; x <= 89; x = x + 1) {
-                        String stringbuild = (x + "," + "false");
+                        String stringbuild = (x + ",false,none");
                         writer.write(stringbuild + "\n");
                     }
                     writer.flush();
@@ -74,7 +74,7 @@ public class ParseBookings {
 
                     Seat_Bronze bseat_ = new Seat_Bronze();
                     bseat_.setID(index);
-                    bseat_.booked(Boolean.parseBoolean(buffersplit[1]));
+                    bseat_.setBooked(Boolean.parseBoolean(buffersplit[1]), buffersplit[2]);
                     Seats_Bronze.add(bseat_);
 
                 } else if (59 >= index && index > 29) {
@@ -82,7 +82,7 @@ public class ParseBookings {
 
                     Seat_Silver sseat_ = new Seat_Silver();
                     sseat_.setID(index);
-                    sseat_.booked(Boolean.parseBoolean(buffersplit[1]));
+                    sseat_.setBooked(Boolean.parseBoolean(buffersplit[1]), buffersplit[2]);
                     Seats_Silver.add(sseat_);
 
                 } else {
@@ -90,7 +90,7 @@ public class ParseBookings {
 
                     Seat_Gold gseat_ = new Seat_Gold();
                     gseat_.setID(index);
-                    gseat_.booked(Boolean.parseBoolean(buffersplit[1]));
+                    gseat_.setBooked(Boolean.parseBoolean(buffersplit[1]), buffersplit[2]);
                     Seats_Gold.add(gseat_);
 
                 }
@@ -126,21 +126,21 @@ public class ParseBookings {
 
             for (int x = 0; x < Seats_Bronze.size(); x = x + 1) {
                 Seat_Bronze b = (Seat_Bronze) Seats_Bronze.get(x);
-                String stringbuild = (b.getID() + "," + Boolean.toString(b.isBooked()));
+                String stringbuild = (b.getID() + "," + Boolean.toString(b.getBooked())+","+b.getBookingName());
 
                 writer.write(stringbuild + "\n");
             }
 
             for (int x = 0; x < Seats_Silver.size(); x = x + 1) {
                 Seat_Silver s = (Seat_Silver) Seats_Silver.get(x);
-                String stringbuild = (s.getID() + "," + Boolean.toString(s.isBooked()));
+                String stringbuild = (s.getID() + "," + Boolean.toString(s.getBooked())+","+s.getBookingName());
 
                 writer.write(stringbuild + "\n");
             }
 
             for (int x = 0; x < Seats_Gold.size(); x = x + 1) {
                 Seat_Gold g = (Seat_Gold) Seats_Gold.get(x);
-                String strinbuild = (g.getID() + "," + Boolean.toString(g.isBooked()));
+                String strinbuild = (g.getID() + "," + Boolean.toString(g.getBooked())+","+g.getBookingName());
 
                 writer.write(strinbuild + "\n");
             }

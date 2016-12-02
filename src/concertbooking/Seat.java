@@ -21,6 +21,7 @@ public class Seat extends JButton {
     int ID;
     boolean booked;
     String type;
+    String bookingname;
     
     public Seat() {
 
@@ -33,17 +34,22 @@ public class Seat extends JButton {
         Border raisedbevel = BorderFactory.createRaisedBevelBorder();
         this.setBorder(raisedbevel);
 
-        //Sets the seats default text to nothing.
+        //Sets the seats defaults.
         this.setText(" ");
+        this.bookingname="none";
 
     }
     
-    public boolean isBooked(){
+    public boolean getBooked(){
         return booked;
     }
     
-    public void booked(boolean booked){
-        this.booked = booked;
+    public void setBooked(boolean booked, String bookingname){
+        this.booked = booked;this.bookingname=bookingname;
+    }
+    
+    public String getBookingName(){
+        return this.bookingname;
     }
     
     public String getType(){

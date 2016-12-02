@@ -8,6 +8,8 @@ package concertbooking;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -145,7 +147,7 @@ public class Interface extends javax.swing.JFrame {
             for (int x = 0; x < this.Seats_Bronze.size(); x = x + 1) {
                 Seat_Bronze seatbronze_ = (Seat_Bronze) Seats_Bronze.get(x);
                 
-                if(seatbronze_.isBooked()){
+                if(seatbronze_.getBooked()){
                     bronzelist_[x].setEnabled(false);
                 }
                 
@@ -168,7 +170,7 @@ public class Interface extends javax.swing.JFrame {
             for (int x = 0; x < this.Seats_Silver.size(); x = x + 1) {
                 Seat_Silver seatsilver_ = (Seat_Silver) Seats_Silver.get(x);
 
-                if(seatsilver_.isBooked()){
+                if(seatsilver_.getBooked()){
                     silverlist_[x].setEnabled(false);
                 }   
                 silverlist_[x].setID(seatsilver_.getID());
@@ -187,7 +189,7 @@ public class Interface extends javax.swing.JFrame {
             for (int x = 0; x < this.Seats_Gold.size(); x = x + 1) {
                 Seat_Gold seatgold_ = (Seat_Gold) Seats_Gold.get(x);
                
-                if(seatgold_.isBooked()){
+                if(seatgold_.getBooked()){
                     goldlist_[x].setEnabled(false);
                 }
                 
@@ -209,22 +211,33 @@ public class Interface extends javax.swing.JFrame {
     }
     
     
-    public void bookSeat(int ID){
+    public void bookSeat(int ID, String bookingname){
         System.out.println(ID);
         if(ID<30){
             Seat_Bronze sb = (Seat_Bronze) Seats_Bronze.get(ID);
-            sb.booked(true);
+            sb.setBooked(true, bookingname);
             Seats_Bronze.set(ID, sb);
         }else if(ID>=30 && ID<60){
             Seat_Silver ss = (Seat_Silver) Seats_Silver.get(ID-30);
-            ss.booked(true);
+            ss.setBooked(true, bookingname);
             Seats_Silver.set(ID-30, ss);
         }else{
             Seat_Gold sg = (Seat_Gold) Seats_Gold.get(ID-60);
-            sg.booked(true);
+            sg.setBooked(true, bookingname);
             Seats_Gold.set(ID-60, sg);
         }
         pb.save(Seats);
+    }
+    
+    private String getBookingName(){
+        JFrame bookingframe = new JFrame("Please Enter Booking Name");
+        String bookingname = JOptionPane.showInputDialog(
+                bookingframe, 
+                "Please Enter Surname:",
+                "Booking Details",
+                JOptionPane.INFORMATION_MESSAGE
+       );
+             return bookingname;   
     }
 
     //Fires when a seat is clicked.
@@ -234,7 +247,9 @@ public class Interface extends javax.swing.JFrame {
             Seat s = (Seat) e.getSource();
             System.out.println(s.getID()+"@"+s.getType());
 
-            Interface.this.bookSeat(s.getID());
+            String bookingname_ = Interface.this.getBookingName();
+            
+            Interface.this.bookSeat(s.getID(),bookingname_);
             Interface.this.populateSeats();
         }
     }
@@ -652,7 +667,7 @@ public class Interface extends javax.swing.JFrame {
                         .addComponent(seat_Gold23, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(seat_Gold24, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(seat_Gold25, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(18, Short.MAX_VALUE))
         );
 
         Panel_Main.addTab("Bookings", Panel_Bookings);
@@ -665,7 +680,7 @@ public class Interface extends javax.swing.JFrame {
         );
         Panel_ReportsLayout.setVerticalGroup(
             Panel_ReportsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 626, Short.MAX_VALUE)
+            .addGap(0, 564, Short.MAX_VALUE)
         );
 
         Panel_Main.addTab("Reports", Panel_Reports);
@@ -713,7 +728,7 @@ public class Interface extends javax.swing.JFrame {
                     .addComponent(jButton1)
                     .addComponent(jButton2))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(Panel_Main, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(Panel_Main, javax.swing.GroupLayout.PREFERRED_SIZE, 592, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -725,8 +740,7 @@ public class Interface extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        Seat_Bronze s = (Seat_Bronze) Seats_Bronze.get(0);
-        System.out.println("Seat 0: "+s.isBooked());
+        this.getBookingName();
     }//GEN-LAST:event_jButton2ActionPerformed
 
     /**
