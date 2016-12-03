@@ -39,6 +39,18 @@ public class Reporting {
         getReportingTotals();
         
     }
+    
+    public Seat getSeatDetails(int id){
+        for(int i=0;i<seats_all.size();i++){
+            Seat s = (Seat) seats_all.get(i);
+            if(s.getID() == id-1){
+                System.out.println("Seat Details: "+s.getBookingName()+s.getBooked());
+                return s;
+            }
+        }
+        System.out.println("Seat Error");
+        return null;
+    }
 
     public void getReportingTotals() {
         
@@ -69,5 +81,39 @@ public class Reporting {
         return this.totalvalue;
     }
     
-
+    public int getSeatID(String isle, int seat){
+        int multi = 0;
+        switch(isle){
+            case("A"):
+                multi=0;
+                break;
+            case("B"):
+                multi=10;
+                break;
+            case("C"):
+                multi=20;
+                break;
+            case("D"):
+                multi=30;
+                break;
+            case("E"):
+                multi=40;
+                break;
+            case("F"):
+                multi=50;
+                break;
+            case("G"):
+                multi=60;
+                break;
+            case("H"):
+                multi=70;
+                break;
+            case("I"):
+                multi=80;
+                break;
+        }
+        return multi+seat;
+    }
+    
+    
 }

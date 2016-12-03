@@ -487,6 +487,17 @@ public class Interface extends javax.swing.JFrame {
         Reporting_TotalSeatsAv = new javax.swing.JLabel();
         Reporting_TotalTakings = new javax.swing.JLabel();
         jSeparator1 = new javax.swing.JSeparator();
+        Button_ReportingGetSeat = new javax.swing.JButton();
+        Input_Reporting_Isle = new javax.swing.JComboBox();
+        Input_Reporting_SeatNo = new javax.swing.JComboBox();
+        reporting_lab1 = new javax.swing.JLabel();
+        reporting_lab2 = new javax.swing.JLabel();
+        reporting_lab3 = new javax.swing.JLabel();
+        reporting_lab4 = new javax.swing.JLabel();
+        Reporting_SeatBooked = new javax.swing.JCheckBox();
+        Reporting_BookingName = new javax.swing.JLabel();
+        Reporting_Programme = new javax.swing.JCheckBox();
+        Reporting_Backstage = new javax.swing.JCheckBox();
         Title_EventDate = new javax.swing.JLabel();
         Title_EventName = new javax.swing.JLabel();
         Button_Clear = new javax.swing.JButton();
@@ -838,6 +849,38 @@ public class Interface extends javax.swing.JFrame {
 
         jSeparator1.setOrientation(javax.swing.SwingConstants.VERTICAL);
 
+        Button_ReportingGetSeat.setText("Get Seat Details");
+        Button_ReportingGetSeat.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                Button_ReportingGetSeatActionPerformed(evt);
+            }
+        });
+
+        Input_Reporting_Isle.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "A", "B", "C", "D", "E", "F", "G", "H", "I" }));
+
+        Input_Reporting_SeatNo.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "1", "2", "3", "4", "5", "6", "7", "8", "9", "10" }));
+
+        reporting_lab1.setFont(new java.awt.Font("Calibri", 0, 18)); // NOI18N
+        reporting_lab1.setText("Seat Booked:");
+
+        reporting_lab2.setFont(new java.awt.Font("Calibri", 0, 18)); // NOI18N
+        reporting_lab2.setText("Booking Name:");
+
+        reporting_lab3.setFont(new java.awt.Font("Calibri", 0, 18)); // NOI18N
+        reporting_lab3.setText("Free Programme:");
+
+        reporting_lab4.setFont(new java.awt.Font("Calibri", 0, 18)); // NOI18N
+        reporting_lab4.setText("Backstage Pass:");
+
+        Reporting_SeatBooked.setEnabled(false);
+
+        Reporting_BookingName.setFont(new java.awt.Font("Calibri", 0, 18)); // NOI18N
+        Reporting_BookingName.setText(".....");
+
+        Reporting_Programme.setEnabled(false);
+
+        Reporting_Backstage.setEnabled(false);
+
         javax.swing.GroupLayout Panel_ReportsLayout = new javax.swing.GroupLayout(Panel_Reports);
         Panel_Reports.setLayout(Panel_ReportsLayout);
         Panel_ReportsLayout.setHorizontalGroup(
@@ -855,27 +898,77 @@ public class Interface extends javax.swing.JFrame {
                     .addComponent(Reporting_TotalTakings))
                 .addGap(138, 138, 138)
                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(319, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(Panel_ReportsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(Panel_ReportsLayout.createSequentialGroup()
+                        .addComponent(reporting_lab3)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(Reporting_Programme))
+                    .addGroup(Panel_ReportsLayout.createSequentialGroup()
+                        .addGap(10, 10, 10)
+                        .addGroup(Panel_ReportsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(Panel_ReportsLayout.createSequentialGroup()
+                                .addComponent(reporting_lab4)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(Reporting_Backstage))
+                            .addGroup(Panel_ReportsLayout.createSequentialGroup()
+                                .addGroup(Panel_ReportsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(reporting_lab1)
+                                    .addComponent(reporting_lab2))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addGroup(Panel_ReportsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(Reporting_SeatBooked)
+                                    .addComponent(Reporting_BookingName)))
+                            .addGroup(Panel_ReportsLayout.createSequentialGroup()
+                                .addGap(15, 15, 15)
+                                .addComponent(Button_ReportingGetSeat)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(Input_Reporting_Isle, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(Input_Reporting_SeatNo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                .addContainerGap(96, Short.MAX_VALUE))
         );
         Panel_ReportsLayout.setVerticalGroup(
             Panel_ReportsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(Panel_ReportsLayout.createSequentialGroup()
-                .addGap(27, 27, 27)
-                .addGroup(Panel_ReportsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel3)
-                    .addComponent(Reporting_TotalBookings))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(Panel_ReportsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel2)
-                    .addComponent(Reporting_TotalSeatsAv))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(Panel_ReportsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(reporting_lab)
-                    .addComponent(Reporting_TotalTakings))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(Panel_ReportsLayout.createSequentialGroup()
-                .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 423, Short.MAX_VALUE))
+                .addGroup(Panel_ReportsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(Panel_ReportsLayout.createSequentialGroup()
+                        .addGap(27, 27, 27)
+                        .addGroup(Panel_ReportsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel3)
+                            .addComponent(Reporting_TotalBookings))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(Panel_ReportsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel2)
+                            .addComponent(Reporting_TotalSeatsAv))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(Panel_ReportsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(reporting_lab)
+                            .addComponent(Reporting_TotalTakings)))
+                    .addGroup(Panel_ReportsLayout.createSequentialGroup()
+                        .addContainerGap()
+                        .addGroup(Panel_ReportsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(Button_ReportingGetSeat)
+                            .addComponent(Input_Reporting_Isle, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(Input_Reporting_SeatNo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(Panel_ReportsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(reporting_lab1)
+                            .addComponent(Reporting_SeatBooked))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(Panel_ReportsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(reporting_lab2)
+                            .addComponent(Reporting_BookingName))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(Panel_ReportsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(reporting_lab3)
+                            .addComponent(Reporting_Programme))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(Panel_ReportsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(reporting_lab4)
+                            .addComponent(Reporting_Backstage)))
+                    .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(395, Short.MAX_VALUE))
         );
 
         Panel_Main.addTab("Reports", Panel_Reports);
@@ -945,6 +1038,14 @@ public class Interface extends javax.swing.JFrame {
         
     }//GEN-LAST:event_Panel_MainStateChanged
 
+    private void Button_ReportingGetSeatActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Button_ReportingGetSeatActionPerformed
+        int id = reporting.getSeatID(this.Input_Reporting_Isle.getSelectedItem().toString(), Integer.parseInt(this.Input_Reporting_SeatNo.getSelectedItem().toString()));
+        Seat s_ =reporting.getSeatDetails(id);
+        this.Reporting_SeatBooked.setSelected(s_.getBooked());
+        this.Reporting_BookingName.setText(s_.getBookingName());
+        //Programme and Backstage pass to be finished.
+    }//GEN-LAST:event_Button_ReportingGetSeatActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -976,10 +1077,17 @@ public class Interface extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton Button_Clear;
+    private javax.swing.JButton Button_ReportingGetSeat;
     private javax.swing.JButton Button_Settings;
+    private javax.swing.JComboBox Input_Reporting_Isle;
+    private javax.swing.JComboBox Input_Reporting_SeatNo;
     private javax.swing.JPanel Panel_Bookings;
     private javax.swing.JTabbedPane Panel_Main;
     private javax.swing.JPanel Panel_Reports;
+    private javax.swing.JCheckBox Reporting_Backstage;
+    private javax.swing.JLabel Reporting_BookingName;
+    private javax.swing.JCheckBox Reporting_Programme;
+    private javax.swing.JCheckBox Reporting_SeatBooked;
     private javax.swing.JLabel Reporting_TotalBookings;
     private javax.swing.JLabel Reporting_TotalSeatsAv;
     private javax.swing.JLabel Reporting_TotalTakings;
@@ -989,6 +1097,10 @@ public class Interface extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel3;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JLabel reporting_lab;
+    private javax.swing.JLabel reporting_lab1;
+    private javax.swing.JLabel reporting_lab2;
+    private javax.swing.JLabel reporting_lab3;
+    private javax.swing.JLabel reporting_lab4;
     private concertbooking.Seat_Bronze seat_Bronze1;
     private concertbooking.Seat_Bronze seat_Bronze10;
     private concertbooking.Seat_Bronze seat_Bronze11;
