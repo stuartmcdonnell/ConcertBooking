@@ -15,6 +15,7 @@ public class Seat_Silver extends Seat{
         
          //Sets the seats colour to silver.
         this.setBackground(new java.awt.Color(131, 131, 131));
+        this.setType("silver");
     
     }
     

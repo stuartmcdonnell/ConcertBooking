@@ -23,6 +23,7 @@ public class Seat extends JButton {
     private String type;
     private String bookingname;
     private float price;
+    private boolean backstage;
     private Border raisedbevel = BorderFactory.createRaisedBevelBorder();
     public Seat() {
 
@@ -35,6 +36,14 @@ public class Seat extends JButton {
         
         this.setBorder(raisedbevel);
 
+    }
+    
+    public void setBackstage(boolean backstage){
+        this.backstage=backstage;
+    }
+    
+    public boolean getBackstage(){
+        return this.backstage;
     }
 
     public void setPrice(float price) {

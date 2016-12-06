@@ -15,6 +15,7 @@ public class Seat_Bronze extends Seat{
     
         //Sets the seats colour to bronze.
         this.setBackground(new java.awt.Color(255, 104, 104));
+        this.setType("bronze");
         
     }
 

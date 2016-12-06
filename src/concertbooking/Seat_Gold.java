@@ -15,6 +15,7 @@ public class Seat_Gold extends Seat{
         
         //Sets the seats colour to gold.
         this.setBackground(new java.awt.Color(240, 160, 36));
+        this.setType("gold");
     
     }
     

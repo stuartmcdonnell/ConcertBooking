@@ -8,10 +8,7 @@ package concertbooking;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.Random;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
@@ -19,7 +16,7 @@ import javax.swing.JOptionPane;
  *
  * @author Stuart
  */
-public class Interface extends javax.swing.JFrame {
+public final class Interface extends javax.swing.JFrame {
 
     ArrayList Seats;
     ArrayList Seats_Bronze;
@@ -277,15 +274,23 @@ public class Interface extends javax.swing.JFrame {
             Seats_Silver.set(ID-30, ss);
         }else{
             Seat_Gold sg = (Seat_Gold) Seats_Gold.get(ID-60);
-            sg.setBooked(true, bookingname);
-            Seats_Gold.set(ID-60, sg);
             
             Random rn = new Random();
             int rdn = rn.nextInt(10 - 1 + 1)+1;
+            
+            //Un-Comment below to make Gold win backstage 100%.
+            //JOptionPane.showMessageDialog(rootPane, "WIN: BACK-STAGE PASS");
+            //sg.setBackstage(true);
+            
             if(rdn == 1){
                 JOptionPane.showMessageDialog(rootPane, "WIN: BACK-STAGE PASS");
-                
-            }
+                sg.setBackstage(true);
+            }            
+            
+            sg.setBooked(true, bookingname);
+            
+            
+            Seats_Gold.set(ID-60, sg);
             
         }
         pb.save(Seats);
@@ -1039,10 +1044,18 @@ public class Interface extends javax.swing.JFrame {
     }//GEN-LAST:event_Panel_MainStateChanged
 
     private void Button_ReportingGetSeatActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Button_ReportingGetSeatActionPerformed
+        this.Reporting_Programme.setSelected(false);this.Reporting_Backstage.setSelected(false);
         int id = reporting.getSeatID(this.Input_Reporting_Isle.getSelectedItem().toString(), Integer.parseInt(this.Input_Reporting_SeatNo.getSelectedItem().toString()));
         Seat s_ =reporting.getSeatDetails(id);
         this.Reporting_SeatBooked.setSelected(s_.getBooked());
         this.Reporting_BookingName.setText(s_.getBookingName());
+        if("silver".equals(s_.getType())){
+            this.Reporting_Programme.setSelected(true);
+
+        }
+        if(s_.getBackstage()){
+            this.Reporting_Backstage.setSelected(true);
+        }
         //Programme and Backstage pass to be finished.
     }//GEN-LAST:event_Button_ReportingGetSeatActionPerformed
 

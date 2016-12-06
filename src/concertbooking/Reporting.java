@@ -44,7 +44,7 @@ public class Reporting {
         for(int i=0;i<seats_all.size();i++){
             Seat s = (Seat) seats_all.get(i);
             if(s.getID() == id-1){
-                System.out.println("Seat Details: "+s.getBookingName()+s.getBooked());
+                //System.out.println("Seat Details: "+s.getBookingName()+s.getBooked());
                 return s;
             }
         }
